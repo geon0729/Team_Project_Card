@@ -1516,6 +1516,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderText: {fileID: 9938937}
+  acceptButton: {fileID: 349483816}
+  rejectButton: {fileID: 56070146}
   numberOfOrders: 1
 --- !u!1 &692983790 stripped
 GameObject:
