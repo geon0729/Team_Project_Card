@@ -7,12 +7,12 @@ using System;
 
 public class IceCreamOrder
 {
-    public string customerName;      // 손님 이름
-    public string dialogue;          // 손님 대사
-    public string[] requiredFlavors; // 주문한 아이스크림 맛
-    public Sprite characterImage;    //손님 이미지
+    public string flavor;
+    public string topping;
 
-    public string coneType;      // 예: "Cone" or "Cup"
-    public string[] scoopFlavors;
-
+    public IceCreamOrder(string flavor, string topping)
+    {
+        this.flavor = flavor;
+        this.topping = topping;
+    }
 }
