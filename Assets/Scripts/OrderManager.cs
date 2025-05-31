@@ -144,4 +144,35 @@ public class OrderManager : MonoBehaviour
     {
         return lastOrderMessage;
     }
+
+    public void NextOrderAfterSubmit()
+    {
+        currentOrderIndex++;
+
+        if (currentOrderIndex < numberOfOrders)
+        {
+            ShowNextOrder();
+        }
+        else
+        {
+            orderText.text = "葛电 林巩捞 场车嚼聪促!";
+            acceptButton.interactable = false;
+            rejectButton.interactable = false;
+        }
+    }
+
+    public void GenerateNewOrder()
+    {
+        string flavor = iceCreamFlavors[Random.Range(0, iceCreamFlavors.Length)];
+        string topping = toppings[Random.Range(0, toppings.Length)];
+        string message = string.Format(orderTemplates[Random.Range(0, orderTemplates.Length)], flavor, topping);
+
+        IceCreamOrder newOrder = new IceCreamOrder(flavor, topping);
+        currentOrder = newOrder;
+        lastOrderMessage = message;
+
+        orderText.text = message;
+
+        Debug.Log("货肺款 林巩 积己凳: " + message);
+    }
 }

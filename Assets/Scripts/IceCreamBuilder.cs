@@ -86,14 +86,24 @@ public class IceCreamBuilder : MonoBehaviour
         bool flavorMatch = selectedScoops.Contains(order.flavor);
         bool toppingMatch = selectedTopping == order.topping;
 
-        bool isSatisfied = flavorMatch && toppingMatch;
+        string result;
 
-        Debug.Log($"맛 일치: {flavorMatch}, 토핑 일치: {toppingMatch}, 만족 여부: {isSatisfied}");
+        if (flavorMatch && toppingMatch)
+            result = "good";
+        else if (flavorMatch || toppingMatch)
+            result = "normal";
+        else
+            result = "bad";
+
+        Debug.Log($"맛 일치: {flavorMatch}, 토핑 일치: {toppingMatch}, 결과: {result}");
 
         ClearCup();
 
         if (iceCreamUIPanel != null)
             iceCreamUIPanel.SetActive(false);
+
+        // 다음 랜덤 주문 생성
+        orderManager.GenerateNewOrder();
     }
 
     private void ClearCup()
