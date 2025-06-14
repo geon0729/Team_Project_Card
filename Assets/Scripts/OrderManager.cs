@@ -12,6 +12,10 @@ public class OrderManager : MonoBehaviour
     public Button acceptButton;
     public Button rejectButton;
 
+    public GameObject customerVisual; // 손님 캐릭터 GameObject
+    public Image customerImageUI; // 손님 얼굴 등 이미지 교체용 (선택사항)
+    public Sprite[] customerSprites; // 다양한 손님 외형 스프라이트들
+
     public static OrderManager Instance { get; private set; }
 
     private string[] iceCreamFlavors = { "바닐라", "초콜릿", "녹차", "딸기", "바나나" };
@@ -84,13 +88,28 @@ public class OrderManager : MonoBehaviour
 
             lastOrderMessage = message;
             orderText.text = message;
+
+            // 손님 이미지 보이게 하기
+            customerVisual.SetActive(true);
+
+            // 손님 이미지 랜덤 설정 (선택사항)
+            if (customerSprites.Length > 0 && customerImageUI != null)
+            {
+                customerImageUI.sprite = customerSprites[Random.Range(0, customerSprites.Length)];
+            }
+            acceptButton.interactable = true;
+            rejectButton.interactable = true;
         }
         else
         {
             orderText.text = "모든 주문이 끝났습니다!";
             acceptButton.interactable = false;
             rejectButton.interactable = false;
+
+            customerVisual.SetActive(false); // 마지막엔 숨김
         }
+        
+
     }
 
     private void AcceptOrder()
@@ -109,11 +128,12 @@ public class OrderManager : MonoBehaviour
         rejectButton.interactable = false;
         orderText.text = "";
 
+        customerVisual.SetActive(false); // 손님 잠시 사라짐
+
         yield return new WaitForSeconds(0.1f);
         orderText.text = "주문이 거절되었습니다.";
         yield return new WaitForSeconds(2f);
 
-        // 새 주문 생성
         string flavor = iceCreamFlavors[Random.Range(0, iceCreamFlavors.Length)];
         string topping = toppings[Random.Range(0, toppings.Length)];
         string message = string.Format(orderTemplates[Random.Range(0, orderTemplates.Length)], flavor, topping);
@@ -172,6 +192,11 @@ public class OrderManager : MonoBehaviour
         lastOrderMessage = message;
 
         orderText.text = message;
+
+        if (customerSprites.Length > 0 && customerImageUI != null)
+        {
+            customerImageUI.sprite = customerSprites[Random.Range(0, customerSprites.Length)];
+        }
 
         Debug.Log("새로운 주문 생성됨: " + message);
     }

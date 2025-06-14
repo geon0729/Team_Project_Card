@@ -9,6 +9,7 @@ public class IceCreamOrder
 {
     public string flavor;
     public string topping;
+    public Sprite customerSprite;
 
     public IceCreamOrder(string flavor, string topping)
     {
