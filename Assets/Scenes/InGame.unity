@@ -1909,16 +1909,16 @@ MonoBehaviour:
   customerVisual: {fileID: 2083205623}
   customerImageUI: {fileID: 870490032}
   customerSprites:
-  - {fileID: 21300000, guid: 86cbbf9f9fb0edc4c817b286163673ef, type: 3}
-  - {fileID: 21300000, guid: b296b2047ed6cef4188693c6291111fb, type: 3}
-  - {fileID: 21300000, guid: e0f12ad4892e32c44b50b360b1174197, type: 3}
-  - {fileID: 21300000, guid: eb0d9e1e161724a4ab8ece8c3164e447, type: 3}
-  - {fileID: 21300000, guid: 846257785d223a24db9a60cc6ae2d34e, type: 3}
-  - {fileID: 21300000, guid: 8465fd8eb77ea9b4a92def0e0fe3b5fc, type: 3}
-  - {fileID: 21300000, guid: aa709cd087e523946b6405b738176e9d, type: 3}
-  - {fileID: 21300000, guid: 10bc74021ed700d44a3d985b78ff8a3b, type: 3}
-  - {fileID: 21300000, guid: 05b7b6d195fc6a84ba10ea75a5c484d4, type: 3}
-  - {fileID: 21300000, guid: f73372a46a07e064aaad2fa94ed7f54a, type: 3}
+  - {fileID: 21300000, guid: ccc05cf4ab4ee0d41ac6f5c2213625c0, type: 3}
+  - {fileID: 21300000, guid: 79e83321063468b4a814848011121c66, type: 3}
+  - {fileID: 21300000, guid: b157649de93d85b419bb1e2944de9bf2, type: 3}
+  - {fileID: 21300000, guid: 193ccda534e45e749ad03fde6b2adfb7, type: 3}
+  - {fileID: 21300000, guid: e8936be9a83a1284494dfb342d8b81d3, type: 3}
+  - {fileID: 21300000, guid: 4ed48e44c0bdbd745bdbcc8f97d3a75a, type: 3}
+  - {fileID: 21300000, guid: dfd38bfe5227a8442801d2efa2340119, type: 3}
+  - {fileID: 21300000, guid: f0a736cc624f67c47ac900664cbeffaa, type: 3}
+  - {fileID: 21300000, guid: d341197933bf5aa47a9e081e21ca3c89, type: 3}
+  - {fileID: 21300000, guid: 5e410887e17c3aa49b77cd88ea93344c, type: 3}
   numberOfOrders: 1
 --- !u!1 &825708058
 GameObject:
@@ -2226,8 +2226,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 20f1f50400924ff40bbd49bbb709224f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2260,8 +2260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 106, y: 22}
-  m_SizeDelta: {x: 200, y: 220}
+  m_AnchoredPosition: {x: 109, y: 46}
+  m_SizeDelta: {x: 240, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &878688464
 GameObject:
