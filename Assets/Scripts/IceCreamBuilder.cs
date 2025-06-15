@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class IceCreamBuilder : MonoBehaviour
 {
@@ -24,8 +25,11 @@ public class IceCreamBuilder : MonoBehaviour
     public Transform[] scoopSpawnPoints;
     public Transform scoopParent;
 
+    public GameObject speechBubble;
+    public TextMeshProUGUI speechText;
 
-    
+
+
 
     [SerializeField] private GameObject iceCreamUIPanel;
 
@@ -97,13 +101,14 @@ public class IceCreamBuilder : MonoBehaviour
 
         Debug.Log($"맛 일치: {flavorMatch}, 토핑 일치: {toppingMatch}, 결과: {result}");
 
+
         ClearCup();
 
         if (iceCreamUIPanel != null)
             iceCreamUIPanel.SetActive(false);
 
         // 다음 랜덤 주문 생성
-        orderManager.GenerateNewOrder();
+        ShowSpeechBubble(result);
     }
 
     private void ClearCup()
@@ -141,6 +146,64 @@ public class IceCreamBuilder : MonoBehaviour
             case "스프링클": return sprinkleSprite;
             default: return defaultToppingSprite;
         }
+    }
+
+    private void ShowSpeechBubble(string result)
+    {
+        if (speechBubble != null && speechText != null)
+        {
+            string message = "";
+
+            switch (result)
+            {
+                case "good":
+                    message = goodMessages[Random.Range(0, goodMessages.Length)];
+                    break;
+                case "normal":
+                    message = normalMessages[Random.Range(0, normalMessages.Length)];
+                    break;
+                case "bad":
+                    message = badMessages[Random.Range(0, badMessages.Length)];
+                    break;
+            }
+
+            speechText.text = message;
+            speechBubble.SetActive(true);
+
+            // 일정 시간 후 숨기기
+            StartCoroutine(HideSpeechBubbleAfterDelay(2f));
+        }
+    }
+
+    private string[] goodMessages = {
+    "정말 맛있어요!",
+    "완벽해요!",
+    "이거 제가 좋아하는 맛이에요!",
+    "다음에도 이걸로 부탁해요!",
+    "다음에 또 올게요!",
+    "이건 진짜 최고예요!"
+    };
+
+    private string[] normalMessages = {
+    "그럭저럭 괜찮네요.",
+    "음… 나쁘진 않아요.",
+    "조금 아쉬워요.",
+    "괜찮지만 특별하진 않네요."
+};
+    private string[] badMessages = {
+    "이건 좀 별로예요...",
+    "내가 만들어도 이것보단 잘만들겠다!.",
+    "이거 맞아요?.",
+    "이건 아닌 것 같아요…"
+};
+
+
+    private IEnumerator HideSpeechBubbleAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        speechBubble.SetActive(false);
+
+        orderManager.NextOrderAfterSubmit();
     }
 
 }
