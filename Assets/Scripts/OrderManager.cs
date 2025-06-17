@@ -16,6 +16,23 @@ public class OrderManager : MonoBehaviour
     public Image customerImageUI;
     public Sprite[] customerSprites;
 
+    public int currentDay = 1;
+    private int maxDays = 5;
+
+    private int[] customersPerDay = { 3, 5, 7, 9, 12 };
+    private float[] timeLimits = { 35f, 40f, 50f, 60f, 75f };
+
+    private float dayTimer;
+    private bool isTiming = false;
+
+    public TextMeshProUGUI dayText;
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI remainingCustomerText;
+
+    public GameObject summaryPanel;
+    public TextMeshProUGUI summaryText;
+    public Button nextDayButton;
+
     public static OrderManager Instance { get; private set; }
 
     private string[] iceCreamFlavors = { "바닐라", "초콜릿", "녹차", "딸기", "바나나" };
@@ -53,9 +70,23 @@ public class OrderManager : MonoBehaviour
     {
         acceptButton.onClick.AddListener(AcceptOrder);
         rejectButton.onClick.AddListener(() => StartCoroutine(HandleRejectOrder()));
+        StartDay();
+    }
+    void Update()
+    {
+        if (isTiming)
+        {
+            dayTimer -= Time.deltaTime;
 
-        GenerateInitialOrders();
-        ShowNextOrder();
+            if (dayTimer <= 0f)
+            {
+                dayTimer = 0f;
+                isTiming = false;
+                EndDay();
+            }
+
+            UpdateTimerUI();
+        }
     }
 
     private void GenerateInitialOrders()
@@ -169,15 +200,16 @@ public class OrderManager : MonoBehaviour
     {
         currentOrderIndex++;
 
+        UpdateTimerUI(); // 남은 손님 수 갱신
+
         if (currentOrderIndex < numberOfOrders)
         {
             ShowNextOrder();
         }
         else
         {
-            orderText.text = "모든 주문이 끝났습니다!";
-            acceptButton.interactable = false;
-            rejectButton.interactable = false;
+            isTiming = false;
+            EndDay();
         }
     }
 
@@ -199,5 +231,56 @@ public class OrderManager : MonoBehaviour
         }
 
         Debug.Log("새로운 주문 생성됨: " + message);
+    }
+    public void StartDay()
+    {
+        summaryPanel.SetActive(false);
+        currentOrderIndex = 0;
+        numberOfOrders = customersPerDay[currentDay - 1];
+        dayTimer = timeLimits[currentDay - 1];
+        isTiming = true;
+
+        UpdateDayUI();
+        GenerateInitialOrders();
+        ShowNextOrder();
+    }
+    private void EndDay()
+    {
+        acceptButton.interactable = false;
+        rejectButton.interactable = false;
+
+        summaryPanel.SetActive(true);
+        summaryText.text = $"<b>Day {currentDay} 요약</b>\n" +
+                           $"완료한 손님: {currentOrderIndex}/{numberOfOrders}\n" +
+                           $"남은 시간: {Mathf.CeilToInt(dayTimer)}초";
+
+        nextDayButton.onClick.RemoveAllListeners();
+        nextDayButton.onClick.AddListener(() =>
+        {
+            if (currentDay < maxDays)
+            {
+                currentDay++;
+                StartDay();
+            }
+            else
+            {
+                summaryText.text = "모든 일차가 완료되었습니다!";
+                nextDayButton.interactable = false;
+            }
+        });
+    }
+    void UpdateTimerUI()
+    {
+        if (timerText != null)
+            timerText.text = $"남은 시간: {Mathf.CeilToInt(dayTimer)}초";
+
+        if (remainingCustomerText != null)
+            remainingCustomerText.text = $"남은 손님: {numberOfOrders - currentOrderIndex}명";
+    }
+
+    void UpdateDayUI()
+    {
+        if (dayText != null)
+            dayText.text = $"Day {currentDay}";
     }
 }
