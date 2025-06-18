@@ -50,12 +50,24 @@ public class IceCreamBuilder : MonoBehaviour
     {
         foreach (Transform child in scoopParent)
         {
-            if (!child.name.StartsWith("ScoopPoint")) // ScoopPoint는 유지
+            if (!child.name.StartsWith("ScoopPoint"))
                 Destroy(child.gameObject);
         }
 
         GameObject scoop = Instantiate(scoopPrefab, scoopParent);
         scoop.transform.position = scoopSpawnPoints[0].position; // 항상 첫 번째 위치에 생성
+
+        RectTransform targetRT = scoopSpawnPoints[0].GetComponent<RectTransform>();
+        RectTransform scoopRT = scoop.GetComponent<RectTransform>();
+
+        if (targetRT != null && scoopRT != null)
+        {
+            scoopRT.sizeDelta = targetRT.rect.size; 
+            scoopRT.localScale = Vector3.one;   
+            scoopRT.anchorMin = new Vector2(0.5f, 0.5f);
+            scoopRT.anchorMax = new Vector2(0.5f, 0.5f);
+            scoopRT.pivot = new Vector2(0.5f, 0.5f);
+        }
 
         Image img = scoop.GetComponent<Image>();
         if (img != null)
@@ -70,14 +82,28 @@ public class IceCreamBuilder : MonoBehaviour
         selectedTopping = topping;
         Debug.Log("선택한 토핑: " + topping);
 
-        // 이전 토핑 제거
+        
         if (currentToppingImage != null)
             Destroy(currentToppingImage);
 
-        // 새로운 토핑 생성
-        currentToppingImage = Instantiate(toppingPrefab, scoopParent); // scoopParent에 붙이기
+        
+        currentToppingImage = Instantiate(toppingPrefab, scoopParent); 
         currentToppingImage.transform.position = toppingSpawnPoint.position;
 
+       
+        RectTransform targetRT = toppingSpawnPoint.GetComponent<RectTransform>();
+        RectTransform toppingRT = currentToppingImage.GetComponent<RectTransform>();
+
+        if (targetRT != null && toppingRT != null)
+        {
+            toppingRT.sizeDelta = targetRT.rect.size;   
+            toppingRT.localScale = Vector3.one;         
+            toppingRT.anchorMin = new Vector2(0.5f, 0.5f); 
+            toppingRT.anchorMax = new Vector2(0.5f, 0.5f);
+            toppingRT.pivot = new Vector2(0.5f, 0.5f);
+        }
+
+        // 이미지 설정
         Image img = currentToppingImage.GetComponent<Image>();
         if (img != null)
             img.sprite = GetSpriteForTopping(topping);
