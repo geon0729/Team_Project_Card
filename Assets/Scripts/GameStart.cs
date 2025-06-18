@@ -2,12 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameStart : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public void StartGame()
+    public Button startButton;
+
+    void Start()
     {
-        SceneManager.LoadScene("InGame"); // æ¿ ¿Ã∏ß ≥÷±‚
+        startButton.onClick.AddListener(OnStartClicked);
+    }
+
+    void OnStartClicked()
+    {
+        PlayerPrefs.DeleteKey("SavedDay");
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene("InGame");
     }
 }

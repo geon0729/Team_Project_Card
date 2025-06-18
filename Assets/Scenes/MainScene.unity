@@ -179,10 +179,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: "\uC2DC\uC791"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1005ee5d38963dd4b9230324535c7023, type: 2}
-  m_sharedMaterial: {fileID: -9010957702232837727, guid: 1005ee5d38963dd4b9230324535c7023, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 048e5796e59331142be4729183b93d23, type: 2}
+  m_sharedMaterial: {fileID: 485814377548759617, guid: 048e5796e59331142be4729183b93d23, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -508,10 +508,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Quit
+  m_text: "\uB098\uAC00\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1005ee5d38963dd4b9230324535c7023, type: 2}
-  m_sharedMaterial: {fileID: -9010957702232837727, guid: 1005ee5d38963dd4b9230324535c7023, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 048e5796e59331142be4729183b93d23, type: 2}
+  m_sharedMaterial: {fileID: 485814377548759617, guid: 048e5796e59331142be4729183b93d23, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -710,10 +710,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Continue
+  m_text: "\uC774\uC5B4\uD558\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1005ee5d38963dd4b9230324535c7023, type: 2}
-  m_sharedMaterial: {fileID: -9010957702232837727, guid: 1005ee5d38963dd4b9230324535c7023, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 048e5796e59331142be4729183b93d23, type: 2}
+  m_sharedMaterial: {fileID: 485814377548759617, guid: 048e5796e59331142be4729183b93d23, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -950,6 +950,7 @@ GameObject:
   - component: {fileID: 1511185914}
   - component: {fileID: 1511185913}
   - component: {fileID: 1511185916}
+  - component: {fileID: 1511185917}
   m_Layer: 5
   m_Name: ContinuButton
   m_TagString: Untagged
@@ -1073,6 +1074,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 0
   m_AspectRatio: 2
+--- !u!114 &1511185917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511185911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a7d14cac62fc64abe8c9883527a443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  continueButton: {fileID: 1511185913}
 --- !u!1 &1663798568
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,6 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d31395790d24549807f6ffc668f050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startButton: {fileID: 1663798570}
 --- !u!114 &1663798574
 MonoBehaviour:
   m_ObjectHideFlags: 0

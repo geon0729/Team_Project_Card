@@ -72,6 +72,8 @@ public class OrderManager : MonoBehaviour
 
     void Start()
     {
+        LoadProgress();
+
         acceptButton.onClick.AddListener(AcceptOrder);
         rejectButton.onClick.AddListener(() => StartCoroutine(HandleRejectOrder()));
         StartDay();
@@ -279,6 +281,7 @@ public class OrderManager : MonoBehaviour
                 summaryPanel.SetActive(false);
                 retryButton.gameObject.SetActive(false);
                 badCount = 0;
+                SaveProgress();
                 StartDay(); // 같은 일차 다시 시작
             });
         }
@@ -294,6 +297,7 @@ public class OrderManager : MonoBehaviour
                 summaryPanel.SetActive(false);
                 currentDay++;
                 badCount = 0;
+                SaveProgress();
                 StartDay();
             });
         }
@@ -321,5 +325,26 @@ public class OrderManager : MonoBehaviour
     public void IncreaseBadCount()
     {
         badCount++;
+    }
+
+    public void SaveProgress()
+    {
+        PlayerPrefs.SetInt("SavedDay", currentDay);
+        PlayerPrefs.Save();
+        Debug.Log("게임 저장됨: Day " + currentDay);
+    }
+
+    public void LoadProgress()
+    {
+        if (PlayerPrefs.HasKey("SavedDay"))
+        {
+            currentDay = PlayerPrefs.GetInt("SavedDay");
+            Debug.Log("저장된 게임 불러옴: Day " + currentDay);
+        }
+        else
+        {
+            currentDay = 1; // 저장된 게 없으면 1일차부터
+            Debug.Log("저장된 데이터 없음. Day 1부터 시작.");
+        }
     }
 }
