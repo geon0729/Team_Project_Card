@@ -30,8 +30,12 @@ public class OrderManager : MonoBehaviour
     public TextMeshProUGUI remainingCustomerText;
 
     public GameObject summaryPanel;
+    public TextMeshProUGUI resultTitleText;
     public TextMeshProUGUI summaryText;
     public Button nextDayButton;
+    public Button retryButton;
+
+    private int badCount = 0;
 
     public static OrderManager Instance { get; private set; }
 
@@ -71,6 +75,9 @@ public class OrderManager : MonoBehaviour
         acceptButton.onClick.AddListener(AcceptOrder);
         rejectButton.onClick.AddListener(() => StartCoroutine(HandleRejectOrder()));
         StartDay();
+        summaryPanel.SetActive(false);
+        retryButton.gameObject.SetActive(false);
+        nextDayButton.interactable = true;
     }
     void Update()
     {
@@ -246,28 +253,56 @@ public class OrderManager : MonoBehaviour
     }
     private void EndDay()
     {
+        isTiming = false;
         acceptButton.interactable = false;
         rejectButton.interactable = false;
 
         summaryPanel.SetActive(true);
-        summaryText.text = $"<b>Day {currentDay} 요약</b>\n" +
-                           $"완료한 손님: {currentOrderIndex}/{numberOfOrders}\n" +
-                           $"남은 시간: {Mathf.CeilToInt(dayTimer)}초";
 
-        nextDayButton.onClick.RemoveAllListeners();
-        nextDayButton.onClick.AddListener(() =>
+        bool isFail = false;
+
+        // 실패 조건 체크
+        if (badCount >= numberOfOrders / 2 || currentOrderIndex < numberOfOrders)
         {
-            if (currentDay < maxDays)
+            isFail = true;
+        }
+
+        if (isFail)
+        {
+            resultTitleText.text = $"<color=red>Day {currentDay} 실패</color>";
+            retryButton.gameObject.SetActive(true);
+            nextDayButton.interactable = false;
+
+            retryButton.onClick.RemoveAllListeners();
+            retryButton.onClick.AddListener(() =>
             {
+                summaryPanel.SetActive(false);
+                retryButton.gameObject.SetActive(false);
+                badCount = 0;
+                StartDay(); // 같은 일차 다시 시작
+            });
+        }
+        else
+        {
+            resultTitleText.text = $"<color=green>Day {currentDay} 완료</color>";
+            nextDayButton.interactable = true;
+            retryButton.gameObject.SetActive(false);
+
+            nextDayButton.onClick.RemoveAllListeners();
+            nextDayButton.onClick.AddListener(() =>
+            {
+                summaryPanel.SetActive(false);
                 currentDay++;
+                badCount = 0;
                 StartDay();
-            }
-            else
-            {
-                summaryText.text = "모든 일차가 완료되었습니다!";
-                nextDayButton.interactable = false;
-            }
-        });
+            });
+        }
+
+        // 결과 요약 텍스트
+        summaryText.text = $"총 손님 수: {numberOfOrders}\n" +
+                           $"완료한 손님: {currentOrderIndex}\n" +
+                           $"Bad 평가 수: {badCount}\n" +
+                           $"남은 시간: {Mathf.CeilToInt(dayTimer)}초";
     }
     void UpdateTimerUI()
     {
@@ -282,5 +317,9 @@ public class OrderManager : MonoBehaviour
     {
         if (dayText != null)
             dayText.text = $"Day {currentDay}";
+    }
+    public void IncreaseBadCount()
+    {
+        badCount++;
     }
 }

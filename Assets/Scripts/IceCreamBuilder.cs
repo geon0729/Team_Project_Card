@@ -107,6 +107,11 @@ public class IceCreamBuilder : MonoBehaviour
         if (iceCreamUIPanel != null)
             iceCreamUIPanel.SetActive(false);
 
+        if (result == "bad")
+        {
+            OrderManager.Instance.IncreaseBadCount(); // 새로운 메서드로 badCount 증가
+        }
+
         // 다음 랜덤 주문 생성
         ShowSpeechBubble(result);
     }
