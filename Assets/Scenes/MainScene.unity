@@ -1277,7 +1277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71fbdb4f44905cf46b9565aead5f5741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startNewGameButton: {fileID: 1663798570}
+  newGameButton: {fileID: 1663798570}
   continueButton: {fileID: 1511185913}
 --- !u!4 &1831264740
 Transform:

@@ -5,27 +5,32 @@ using UnityEngine.UI;
 
 public class TitleUIManager : MonoBehaviour
 {
-
-    public Button startNewGameButton;
+    public Button newGameButton;
     public Button continueButton;
-    // Start is called before the first frame update
+
     void Start()
     {
-        if (PlayerPrefs.HasKey("SavedDay"))
+        UpdateButtonStates();
+    }
+
+    void Update()
+    {
+        // R 키로 저장 초기화
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            startNewGameButton.interactable = false;
-            continueButton.interactable = true;
-        }
-        else
-        {
-            startNewGameButton.interactable = true;
-            continueButton.interactable = false;
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+            Debug.Log("저장 데이터 초기화됨");
+            UpdateButtonStates();
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateButtonStates()
     {
-        
+        bool hasSave = PlayerPrefs.HasKey("SavedDay");
+
+        continueButton.interactable = hasSave;
+        newGameButton.interactable = !hasSave;
     }
 }
+
