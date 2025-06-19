@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OrderManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class OrderManager : MonoBehaviour
     private int maxDays = 5;
 
     private int[] customersPerDay = { 3, 5, 7, 9, 12 };
-    private float[] timeLimits = { 60f, 60f, 60f, 70f, 85f };
+    private float[] timeLimits = { 60f, 40f, 50f, 60f, 70f };
 
     private float dayTimer;
     private bool isTiming = false;
@@ -28,12 +29,13 @@ public class OrderManager : MonoBehaviour
     public TextMeshProUGUI dayText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI remainingCustomerText;
-
+    
     public GameObject summaryPanel;
     public TextMeshProUGUI resultTitleText;
     public TextMeshProUGUI summaryText;
     public Button nextDayButton;
     public Button retryButton;
+    public Button titleButton;
 
     private int badCount = 0;
 
@@ -85,6 +87,11 @@ public class OrderManager : MonoBehaviour
         summaryPanel.SetActive(false);
         retryButton.gameObject.SetActive(false);
         nextDayButton.interactable = true;
+        titleButton.gameObject.SetActive(false);
+        titleButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene("MainScene");
+        });
     }
     void Update()
     {
@@ -248,7 +255,6 @@ public class OrderManager : MonoBehaviour
 
         bool isFail = false;
 
-        // 실패 조건 체크
         if (badCount >= numberOfOrders / 2 || currentOrderIndex < numberOfOrders)
         {
             isFail = true;
@@ -272,26 +278,53 @@ public class OrderManager : MonoBehaviour
         }
         else
         {
-            resultTitleText.text = $"<color=green>Day {currentDay} 완료</color>";
-            nextDayButton.interactable = true;
-            retryButton.gameObject.SetActive(false);
-
-            nextDayButton.onClick.RemoveAllListeners();
-            nextDayButton.onClick.AddListener(() =>
+            if (currentDay >= maxDays)  // 모든 일차 완료 조건
             {
-                summaryPanel.SetActive(false);
-                currentDay++;
-                badCount = 0;
-                SaveProgress();
-                StartDay();
-            });
+                // 모든 일차 완료 메시지
+                resultTitleText.text = "<color=green>모든 일차를 완료했습니다!</color>";
+
+                retryButton.gameObject.SetActive(false);
+                nextDayButton.gameObject.SetActive(false);
+
+                // 타이틀 화면으로 가는 버튼 활성화
+                titleButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                resultTitleText.text = $"<color=green>Day {currentDay} 완료</color>";
+                nextDayButton.interactable = true;
+                retryButton.gameObject.SetActive(false);
+                titleButton.gameObject.SetActive(false);
+
+                nextDayButton.onClick.RemoveAllListeners();
+                nextDayButton.onClick.AddListener(() =>
+                {
+                    summaryPanel.SetActive(false);
+                    currentDay++;
+                    badCount = 0;
+                    SaveProgress();
+                    StartDay();
+                });
+            }
         }
 
-        // 결과 요약 텍스트
         summaryText.text = $"총 손님 수: {numberOfOrders}\n" +
                            $"완료한 손님: {currentOrderIndex}\n" +
                            $"Bad 평가 수: {badCount}\n" +
                            $"남은 시간: {Mathf.CeilToInt(dayTimer)}초";
+    }
+    public void NextDay()
+    {
+        if (currentDay < maxDays)
+        {
+            currentDay++;
+            StartDay();
+        }
+        else
+        {
+            Debug.Log("모든 일차를 완료했습니다!");
+            // 게임 종료 또는 다른 처리
+        }
     }
     void UpdateTimerUI()
     {
@@ -364,5 +397,9 @@ public class OrderManager : MonoBehaviour
             rejectButton.interactable = false;
             customerVisual.SetActive(false);
         }
+    }
+    public float GetRemainingTime()
+    {
+        return dayTimer;
     }
 }
