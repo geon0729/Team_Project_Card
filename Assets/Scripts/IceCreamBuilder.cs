@@ -28,7 +28,7 @@ public class IceCreamBuilder : MonoBehaviour
     public GameObject speechBubble;
     public TextMeshProUGUI speechText;
 
-
+    public TextMeshProUGUI iceCreamTimerText;
 
 
     [SerializeField] private GameObject iceCreamUIPanel;
@@ -44,6 +44,14 @@ public class IceCreamBuilder : MonoBehaviour
     void Start()
     {
         orderManager = FindObjectOfType<OrderManager>();
+    }
+    void Update()
+    {
+        if (orderManager != null && iceCreamTimerText != null)
+        {
+            // 남은 시간을 정수초 단위로 표시
+            iceCreamTimerText.text = $"남은 시간: {Mathf.CeilToInt(orderManager.GetRemainingTime())}초";
+        }
     }
 
     public void AddScoop(string flavor)
