@@ -20,7 +20,7 @@ public class OrderManager : MonoBehaviour
     private int maxDays = 5;
 
     private int[] customersPerDay = { 3, 5, 7, 9, 12 };
-    private float[] timeLimits = { 35f, 40f, 50f, 60f, 75f };
+    private float[] timeLimits = { 60f, 60f, 60f, 70f, 85f };
 
     private float dayTimer;
     private bool isTiming = false;
@@ -57,6 +57,11 @@ public class OrderManager : MonoBehaviour
     private string lastOrderMessage;
 
     public IceCreamOrder currentOrder { get; private set; }
+
+    private bool isWaitingForReaction = false;
+
+    public bool IsWaitingForReaction => isWaitingForReaction;
+
 
     private void Awake()
     {
@@ -97,6 +102,12 @@ public class OrderManager : MonoBehaviour
             UpdateTimerUI();
         }
     }
+    public void SetReactionWaiting(bool state)
+    {
+        isWaitingForReaction = state;
+        acceptButton.interactable = !state;
+        rejectButton.interactable = !state;
+    }
 
     private void GenerateInitialOrders()
     {
@@ -119,36 +130,10 @@ public class OrderManager : MonoBehaviour
 
     private void ShowNextOrder()
     {
-        if (currentOrderIndex < generatedOrders.Count)
-        {
-            currentOrder = generatedOrders[currentOrderIndex];
+        acceptButton.interactable = false;
+        rejectButton.interactable = false;
 
-            string message = string.Format(orderTemplates[Random.Range(0, orderTemplates.Length)],
-                                           currentOrder.flavor, currentOrder.topping);
-
-            lastOrderMessage = message;
-            orderText.text = message;
-
-            
-            customerVisual.SetActive(true);
-
-            
-            if (customerSprites.Length > 0 && customerImageUI != null)
-            {
-                customerImageUI.sprite = customerSprites[Random.Range(0, customerSprites.Length)];
-            }
-            acceptButton.interactable = true;
-            rejectButton.interactable = true;
-        }
-        else
-        {
-            orderText.text = "모든 주문이 끝났습니다!";
-            acceptButton.interactable = false;
-            rejectButton.interactable = false;
-
-            customerVisual.SetActive(false); 
-        }
-        
+        StartCoroutine(ShowNextOrderWithDelay());
 
     }
 
@@ -156,8 +141,8 @@ public class OrderManager : MonoBehaviour
     {
         Debug.Log($"주문 수락됨: {lastOrderMessage}");
 
-        orderText.text = "아이스크림 제작 창으로 이동 중...";
-        
+        acceptButton.interactable = false;
+        rejectButton.interactable = false;
     }
 
     private IEnumerator HandleRejectOrder()
@@ -345,6 +330,39 @@ public class OrderManager : MonoBehaviour
         {
             currentDay = 1; // 저장된 게 없으면 1일차부터
             Debug.Log("저장된 데이터 없음. Day 1부터 시작.");
+        }
+    }
+    private IEnumerator ShowNextOrderWithDelay()
+    {
+        orderText.text = "";
+
+        yield return new WaitForSeconds(0.05f);
+
+        if (currentOrderIndex < generatedOrders.Count)
+        {
+            currentOrder = generatedOrders[currentOrderIndex];
+            lastOrderMessage = string.Format(
+                orderTemplates[Random.Range(0, orderTemplates.Length)],
+                currentOrder.flavor, currentOrder.topping);
+
+            orderText.text = lastOrderMessage;
+
+            customerVisual.SetActive(true);
+
+            if (customerSprites.Length > 0 && customerImageUI != null)
+            {
+                customerImageUI.sprite = customerSprites[Random.Range(0, customerSprites.Length)];
+            }
+
+            acceptButton.interactable = true;
+            rejectButton.interactable = true;
+        }
+        else
+        {
+            orderText.text = "모든 주문이 끝났습니다!";
+            acceptButton.interactable = false;
+            rejectButton.interactable = false;
+            customerVisual.SetActive(false);
         }
     }
 }

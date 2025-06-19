@@ -117,7 +117,6 @@ public class IceCreamBuilder : MonoBehaviour
         bool toppingMatch = selectedTopping == order.topping;
 
         string result;
-
         if (flavorMatch && toppingMatch)
             result = "good";
         else if (flavorMatch || toppingMatch)
@@ -127,19 +126,15 @@ public class IceCreamBuilder : MonoBehaviour
 
         Debug.Log($"맛 일치: {flavorMatch}, 토핑 일치: {toppingMatch}, 결과: {result}");
 
+        
+        orderManager.SetReactionWaiting(true);
 
-        ClearCup();
+        ShowSpeechBubble(result);
 
         if (iceCreamUIPanel != null)
             iceCreamUIPanel.SetActive(false);
 
-        if (result == "bad")
-        {
-            OrderManager.Instance.IncreaseBadCount(); // 새로운 메서드로 badCount 증가
-        }
-
-        // 다음 랜덤 주문 생성
-        ShowSpeechBubble(result);
+        ClearCup();
     }
 
     private void ClearCup()
@@ -202,7 +197,7 @@ public class IceCreamBuilder : MonoBehaviour
             speechBubble.SetActive(true);
 
             // 일정 시간 후 숨기기
-            StartCoroutine(HideSpeechBubbleAfterDelay(2f));
+            StartCoroutine(HideSpeechBubbleAfterDelay(1.5f));
         }
     }
 
@@ -234,6 +229,9 @@ public class IceCreamBuilder : MonoBehaviour
         yield return new WaitForSeconds(delay);
         speechBubble.SetActive(false);
 
+        speechBubble.SetActive(false);
+
+        orderManager.SetReactionWaiting(false);
         orderManager.NextOrderAfterSubmit();
     }
 
