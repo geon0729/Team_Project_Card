@@ -132,6 +132,11 @@ public class IceCreamBuilder : MonoBehaviour
         else
             result = "bad";
 
+        if (result == "bad")
+        {
+            orderManager.IncreaseBadCount();
+        }
+
         Debug.Log($"맛 일치: {flavorMatch}, 토핑 일치: {toppingMatch}, 결과: {result}");
 
         

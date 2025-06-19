@@ -21,7 +21,7 @@ public class OrderManager : MonoBehaviour
     private int maxDays = 5;
 
     private int[] customersPerDay = { 3, 5, 7, 9, 12 };
-    private float[] timeLimits = { 60f, 40f, 50f, 60f, 70f };
+    private float[] timeLimits = { 20f, 40f, 50f, 60f, 70f };
 
     private float dayTimer;
     private bool isTiming = false;
@@ -266,6 +266,9 @@ public class OrderManager : MonoBehaviour
             retryButton.gameObject.SetActive(true);
             nextDayButton.interactable = false;
 
+            nextDayButton.gameObject.SetActive(false);
+            titleButton.gameObject.SetActive(false);
+
             retryButton.onClick.RemoveAllListeners();
             retryButton.onClick.AddListener(() =>
             {
@@ -401,5 +404,13 @@ public class OrderManager : MonoBehaviour
     public float GetRemainingTime()
     {
         return dayTimer;
+    }
+    public void PauseTimer()
+    {
+        isTiming = false;
+    }
+    public void ResumeTimer()
+    {
+        isTiming = true;
     }
 }
