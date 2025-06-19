@@ -21,7 +21,7 @@ public class OrderManager : MonoBehaviour
     private int maxDays = 5;
 
     private int[] customersPerDay = { 3, 5, 7, 9, 12 };
-    private float[] timeLimits = { 20f, 40f, 50f, 60f, 70f };
+    private float[] timeLimits = { 60f, 40f, 50f, 60f, 70f };
 
     private float dayTimer;
     private bool isTiming = false;
@@ -29,7 +29,8 @@ public class OrderManager : MonoBehaviour
     public TextMeshProUGUI dayText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI remainingCustomerText;
-    
+    public GameObject KitchenPanel;
+
     public GameObject summaryPanel;
     public TextMeshProUGUI resultTitleText;
     public TextMeshProUGUI summaryText;
@@ -250,6 +251,9 @@ public class OrderManager : MonoBehaviour
         isTiming = false;
         acceptButton.interactable = false;
         rejectButton.interactable = false;
+
+        if (KitchenPanel != null && KitchenPanel.activeSelf)
+            KitchenPanel.SetActive(false);
 
         summaryPanel.SetActive(true);
 

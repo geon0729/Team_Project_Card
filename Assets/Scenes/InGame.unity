@@ -2140,6 +2140,7 @@ MonoBehaviour:
   dayText: {fileID: 426673670}
   timerText: {fileID: 1407748312}
   remainingCustomerText: {fileID: 1487711518}
+  KitchenPanel: {fileID: 86893072}
   summaryPanel: {fileID: 418662540}
   resultTitleText: {fileID: 1466887965}
   summaryText: {fileID: 1446554660}
